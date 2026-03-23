@@ -4,7 +4,7 @@ function [J,transmission] = Processing_ALSP(image,ImageType)
         param.image = im2double(image);
         param.gamma = 1;
         %Increase Omega for preventing over-enhancement, for naturally, [5,50] is suggested
-        param.Omega=2;
+        param.Omega=20;
         [J,transmission]=ALSP(param,ImageType);
     elseif ImageType == 2
         %%%% The underwater image 
@@ -23,7 +23,7 @@ function [J,transmission] = Processing_ALSP(image,ImageType)
         %%%% the low light image   
         param.image = 1-im2double(image)+0.01;
         param.gamma = 0.9;
-        param.Omega=20;
+        param.Omega=2;
         [J,transmission]=ALSP(param,ImageType);
         J=1-J;
     end
