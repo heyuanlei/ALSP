@@ -50,9 +50,10 @@ mask_full=imgaussfilt(double(mask_full),10*patch_size);
 
 % % calculate transmission map 
 if ImageType==3
+    A=[1,1,1];
     AA = reshape(repmat(A,[m*n,1]),m,n,3);
     transmission = real(transmission_ALSM(I1,AA,patch_size));
-    t_final = min(max(transmission, 0.05),0.95);
+    t_final = min(max(transmission, 0.05),1);
 else
     %refine the ambient light
     AA = reshape(repmat(A1,[m*n,1]),m,n,3).*mask_full+reshape(repmat(A,[m*n,1]),m,n,3).*(1-mask_full);
@@ -75,7 +76,7 @@ else
     t_final = min(max(transmission, tm),0.95);
 end
 
-t_final = guidedfilter(rgb2gray(I1),t_final,3*patch_size,0.01); % non-overlapping patches calls for larger patch size in smoothing
+t_final = guidedfilter(rgb2gray(I1),t_final,4*patch_size,0.01); % non-overlapping patches calls for larger patch size in smoothing
 J = (I1-AA)./(t_final.^gamma)+AA;
 % J(J>1)=1;
 J(J<0)=0.01;
